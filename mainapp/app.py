@@ -230,7 +230,7 @@ elif menu_select == 'Plant Disease Detection':
             elif plant_type=='Potato':
                 image=Image.open(uploaded_file)
                 preprocessed_image=preprocess_frame(image)
-                potato_model = load_model("mainapp\potatoes.h5")
+                potato_model = load_model("mainapp/potatoes.h5")
                 prediction = potato_model.predict(preprocessed_image) 
                 dict={
                 0: 'Early_blight',
