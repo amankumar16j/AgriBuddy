@@ -328,7 +328,8 @@ elif menu_select== 'Dashboard':
                     
                     """, unsafe_allow_html=True)
     with st.container(border=True):
-        
+                
+        st.title("Jalandhar")  
         cols = st.columns([5,5,5,5])
         
         # Display current weather
