@@ -4,7 +4,7 @@ tensorflow
 Pillow==10.2.0
 streamlit-lottie==0.0.5
 numpy==1.26.4
-keras==2.15.0
+keras
 matplotlib==3.8.2
 scikit-learn==1.4.0
 pandas==2.2.0
