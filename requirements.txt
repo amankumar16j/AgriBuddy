@@ -13,5 +13,4 @@ joblib==1.3.2
 tensorflow
 streamlit-option-menu
 streamlit_shadcn_ui
-opencv-python
-opencv-contrib-python
+opencv-python-headless
