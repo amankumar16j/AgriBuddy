@@ -14,3 +14,4 @@ tensorflow
 streamlit-option-menu
 streamlit_shadcn_ui
 opencv-python
+opencv-contrib-python
