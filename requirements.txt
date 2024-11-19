@@ -3,7 +3,6 @@ beautifulsoup4==4.12.3
 Pillow==10.2.0
 streamlit-lottie==0.0.5
 numpy==1.26.4
-tensorflow==2.15.0
 keras==2.15.0
 matplotlib==3.8.2
 scikit-learn==1.4.0
