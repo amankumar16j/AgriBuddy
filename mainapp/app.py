@@ -22,16 +22,7 @@ from streamlit_js_eval import streamlit_js_eval, get_geolocation
 
 st.set_page_config(layout="wide")
 
-loc = get_geolocation()
 
-lat=1
-lon=1
-
-if loc is not None and 'coords' in loc:
-    lat = loc['coords']['latitude']
-    lon = loc['coords']['longitude']
-else:
-    st.error("Geolocation data could not be retrieved.")
     # Handle the error gracefully (e.g., set default values, show a message, etc.)
 
 
@@ -354,8 +345,15 @@ elif menu_select== 'Dashboard':
         # Load data according to city info----------------------------
         days = 7
         if(city=="Your Location"):
-            lat=loc['coords']['latitude']
-            lon=loc['coords']['longitude']
+            loc = get_geolocation()
+            lat=1
+            lon=1
+
+            if loc is not None and 'coords' in loc:
+                lat = loc['coords']['latitude']
+                lon = loc['coords']['longitude']
+            else:
+                st.error("Geolocation data could not be retrieved. Try inputing state name")
         else:
             lat, lon = get_lat_lon(city, api_key)
             
