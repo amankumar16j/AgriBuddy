@@ -18,9 +18,13 @@ import joblib
 from streamlit_lottie import st_lottie
 from datetime import datetime
 import os
-
+from streamlit_js_eval import streamlit_js_eval, get_geolocation
 
 st.set_page_config(layout="wide")
+
+loc = get_geolocation()
+lat=loc['coords']['latitude']
+lon=loc['coords']['longitude']
 
 # @st.cache_data
 # def get_data():
@@ -330,13 +334,22 @@ elif menu_select== 'Dashboard':
                     """, unsafe_allow_html=True)
     with st.container(border=True):
         
+        label="City Name"
+        options=["Your Location","Jalandhar","Bhopal","Indore","Delhi","Uttar Pradesh","Tamil Nadu"]
+        city = st.selectbox(label, options, index=0, key=None, help=None, on_change=None, args=None, kwargs=None)
+        st.header(city)
+        
         cols = st.columns([5,5,5,5])
         
         # Display current weather
         # Load data according to city info----------------------------
         days = 7
-        city = "Jalandhar"
-        lat, lon = get_lat_lon(city, api_key)
+        if(city=="Your Location"):
+            lat=loc['coords']['latitude']
+            lon=loc['coords']['longitude']
+        else:
+            lat, lon = get_lat_lon(city, api_key)
+            
         if lat is not None and lon is not None:
             pass
         else:
@@ -403,19 +416,25 @@ elif menu_select== 'Dashboard':
         
 
         # Load data according to city info----------------------------
-        days = 7
-        city = "Jalandhar"
-        lat, lon = get_lat_lon(city, api_key)
-        if lat is not None and lon is not None:
-            pass
-        else:
-            st.error("City not found, please try again.")
-        weather_data = get_weather_data(lat, lon, days)
-
         if weather_data:
+            days = st.slider(
+            label="Select a number",
+            min_value=2,
+            max_value=20,
+            value=10,  # Default value
+            step=1  # Step size
+            )
+        
+            # lat, lon = get_lat_lon(city, api_key)
+            if lat is not None and lon is not None: 
+                pass
+            else:
+                st.error("City not found, please try again.")
+            weather_data = get_weather_data(lat, lon, days)
             # Display forecast
             st.header(f"{days}-Day Forecast")
             forecast = weather_data['daily']
+            
                 
             data = {
             'Date': forecast['time'],  
@@ -436,7 +455,7 @@ elif menu_select== 'Dashboard':
             
             with cols[0]:
 
-            # 1. Max and Min Temperature Line Chart
+                # 1. Max and Min Temperature Line Chart
                 temp_chart = alt.Chart(df).transform_fold(
                 ['Max_temp(°C)', 'Min_temp(°C)'],
                 as_=['Temperature Type', 'Temperature']
@@ -466,38 +485,38 @@ elif menu_select== 'Dashboard':
                             alt.Tooltip('Temperature Type:N', title='Type')]
                 )
 
-            # Layering the line chart with the points chart
+                # Layering the line chart with the points chart
                 final_chart = temp_chart + points
 
                 st.altair_chart(final_chart, use_container_width=True)
 
 
-        with cols[1]:
+            with cols[1]:
         
-        # 3. Precipitation Probability Line Chart
-            precip_chart = alt.Chart(df).mark_line(strokeWidth=3).encode(
-                x=alt.X('Date:T',timeUnit="date"),
-                y=alt.Y('Precpitation(%):Q', title='Precipitation Probability (%)'),
-                
-                tooltip=[alt.Tooltip('Date:T', title='Date'),
-                    alt.Tooltip('Precpitation(%):Q',title='Precipatation(%)')]
-            ).properties(
-                title='Precipitation Probability Over Time',
-                width=600,
-                height=400
-            )
+                # 3. Precipitation Probability Line Chart
+                precip_chart = alt.Chart(df).mark_line(strokeWidth=3).encode(
+                    x=alt.X('Date:T',timeUnit="date"),
+                    y=alt.Y('Precpitation(%):Q', title='Precipitation Probability (%)'),
+                    
+                    tooltip=[alt.Tooltip('Date:T', title='Date'),
+                        alt.Tooltip('Precpitation(%):Q',title='Precipatation(%)')]
+                ).properties(
+                    title='Precipitation Probability Over Time',
+                    width=600,
+                    height=400
+                )
 
-            points1 = alt.Chart(df).mark_point(size=100).encode(  # Increase size for bigger dots
-                x=alt.X('Date:T', timeUnit='date'),
-                y=alt.Y('Precpitation(%):Q',title='Precipitation Probability (%)'),
-                
-                tooltip=[alt.Tooltip('Date:T', title='Date'),
-                    alt.Tooltip('Precpitation(%):Q',title='Precipatation(%)')]
-            )
-            finalchart1=precip_chart+points1
-            st.altair_chart(finalchart1, use_container_width=True)
-    
-        
+                points1 = alt.Chart(df).mark_point(size=100).encode(  # Increase size for bigger dots
+                    x=alt.X('Date:T', timeUnit='date'),
+                    y=alt.Y('Precpitation(%):Q',title='Precipitation Probability (%)'),
+                    
+                    tooltip=[alt.Tooltip('Date:T', title='Date'),
+                        alt.Tooltip('Precpitation(%):Q',title='Precipatation(%)')]
+                )
+                finalchart1=precip_chart+points1
+                st.altair_chart(finalchart1, use_container_width=True)
+
+            
     
     with st.container(border=True):
         st.title("Price Forecast For Various Commodities")
