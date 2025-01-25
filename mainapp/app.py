@@ -23,8 +23,17 @@ from streamlit_js_eval import streamlit_js_eval, get_geolocation
 st.set_page_config(layout="wide")
 
 loc = get_geolocation()
-lat=loc['coords']['latitude']
-lon=loc['coords']['longitude']
+
+lat=1
+lon=1
+
+if loc is not None and 'coords' in loc:
+    lat = loc['coords']['latitude']
+    lon = loc['coords']['longitude']
+else:
+    st.error("Geolocation data could not be retrieved.")
+    # Handle the error gracefully (e.g., set default values, show a message, etc.)
+
 
 # @st.cache_data
 # def get_data():
