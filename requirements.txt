@@ -16,3 +16,4 @@ streamlit_shadcn_ui
 opencv-python-headless
 translate
 streamlit_js_eval
+bs4
