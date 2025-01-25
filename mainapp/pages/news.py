@@ -63,4 +63,3 @@ for news,img in zip(cont,img_tags):
       
       with cols[1]:
         st.markdown(f'<a href="{full_link}" style="font-size:40px; text-decoration:none;">{text}</a>', unsafe_allow_html=True)
-
