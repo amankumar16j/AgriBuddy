@@ -19,6 +19,7 @@ from streamlit_lottie import st_lottie
 from datetime import datetime
 import os
 
+
 st.set_page_config(layout="wide")
 
 # @st.cache_data
